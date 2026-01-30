@@ -2,68 +2,64 @@
 
 @section('content')
 
-<h2 class="mb-4" style="color:#c084fc;">Event Terbaru</h2>
+<h2 class="mb-4" style="color: #facc15;">Event Terbaru</h2>
 
-<a href="/events/create" class="btn btn-primary mb-4">+ Tambah Event</a>
+<a href="{{ route('events.create') }}" class="btn btn-primary mb-4">+ Tambah Event</a>
 
-<div class="row g-4">
-    @forelse($events as $event)
-        <div class="col-md-4">
-            <div class="card-custom p-0 overflow-hidden">
+<form action="{{ route('events.index') }}" method="GET" class="mb-4">
+    <div class="input-group">
+        <input 
+            type="text" 
+            name="search" 
+            class="form-control"
+            placeholder="Cari event (judul, kota, venue)..."
+            value="{{ request('search') }}">
+        <button class="btn btn-primary">Cari</button>
+    </div>
+</form>
 
-                {{-- Gambar + Badge --}}
-                <div style="position:relative;">
-                    @if($event->image)
-                        <img src="{{ asset('storage/' . $event->image) }}"
-                             style="width:100%; height:180px; object-fit:cover;">
-                    @else
-                        <div style="height:180px; background:#222;"></div>
-                    @endif
+@if(request('search'))
+    <h4 class="mb-3 text-warning">🔍 Hasil Pencarian</h4>
 
-                    @if($event->tickets_available == 0)
-                        <span style="
-                            position:absolute;
-                            top:12px;
-                            right:12px;
-                            background:#dc2626;
-                            color:white;
-                            padding:6px 14px;
-                            border-radius:999px;
-                            font-size:12px;
-                            font-weight:600;
-                            letter-spacing:0.5px;
-                        ">
-                            SOLD OUT
-                        </span>
-                    @endif
-                </div>
+    <div class="row g-4 mb-5">
+        @forelse($events as $event)
+            @include('partials.card', ['event' => $event, 'isExpired' => false])
+        @empty
+            <p class="text-muted">Event tidak ditemukan.</p>
+        @endforelse
+    </div>
+@endif
 
-                {{-- Konten --}}
-                <div class="p-4">
-                    <h5 class="fw-semibold">{{ $event->title }}</h5>
-                    <p class="text-muted mb-1">{{ $event->city }}</p>
-                    <p class="mb-3">Mulai dari: <strong>Rp {{ number_format($event->price) }}</strong></p>
+@if(!request('search'))
+<h4 class="mb-3 text-warning">🔥 Event Minggu Ini</h4>
 
-                    <div class="d-flex gap-2">
-                        <a href="/events/{{ $event->id }}" class="btn btn-warning btn-sm">Detail</a>
-                        <a href="/events/{{ $event->id }}/edit" class="btn btn-info btn-sm">Edit</a>
-
-                        <form action="/events/{{ $event->id }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm"
-                                onclick="return confirm('Yakin hapus event ini?')">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+<div class="row g-4 mb-5">
+    @forelse($eventMingguIni as $event)
+        @php $isExpired = false; @endphp
+        @includeWhen(true, 'partials.card', ['event' => $event, 'isExpired' => false])
     @empty
-        <p>Belum ada event.</p>
+        <p class="text-muted">Belum ada event minggu ini.</p>
     @endforelse
 </div>
+
+<h4 class="mb-3 text-secondary">⛔ Event Berakhir</h4>
+<div class="row g-4 mb-5">
+    @forelse($eventExpired as $event)
+        @includeWhen(true, 'partials.card', ['event' => $event, 'isExpired' => true])
+    @empty
+        <p class="text-muted">Belum ada event berakhir.</p>
+    @endforelse
+</div>
+
+<h4 class="mb-3 text-warning">📅 Event Akan Datang</h4>
+<div class="row g-4 mb-5">
+    @forelse($eventUpcoming as $event)
+        @includeWhen(true, 'partials.card', ['event' => $event, 'isExpired' => false])
+    @empty
+        <p class="text-muted">Belum ada event akan datang.</p>
+    @endforelse
+</div>
+
+@endif
 
 @endsection

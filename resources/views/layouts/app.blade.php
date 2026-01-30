@@ -82,6 +82,22 @@
         .card-custom .p-4 {
             flex: 1;
         }
+        .event-expired {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
+    .expired-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #444;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
     </style>
 </head>
 <body>

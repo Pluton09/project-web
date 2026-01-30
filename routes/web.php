@@ -7,5 +7,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('events', EventController::class);
+Route::resource('events', \App\Http\Controllers\EventController::class);
 Route::get('/dashboard', [EventController::class, 'dashboard']);

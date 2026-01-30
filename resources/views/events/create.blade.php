@@ -4,35 +4,43 @@
 
 <h2 class="mb-4">Tambah Event</h2>
 
-<form action="/events" method="POST" enctype="multipart/form-data">
+<form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+
     @csrf
 
     <div class="mb-2">
-        <input type="text" name="title" class="form-control" placeholder="Judul Event">
+        <label>Nama Event</label>
+        <input type="text" name="title" class="form-control">
     </div>
 
     <div class="mb-2">
-        <textarea name="description" class="form-control" placeholder="Deskripsi"></textarea>
+        <label>Deskripsi</label>
+        <textarea name="description" class="form-control" ></textarea>
     </div>
 
     <div class="mb-2">
-        <input type="text" name="city" class="form-control" placeholder="Kota">
+        <label>Kota</label>
+        <input type="text" name="city" class="form-control">
     </div>
 
     <div class="mb-2">
-        <input type="text" name="venue" class="form-control" placeholder="Venue">
+        <label>Nama Venue</label>
+        <input type="text" name="venue" class="form-control">
     </div>
 
     <div class="mb-2">
+        <label>Tanggal Event</label>
         <input type="date" name="date" class="form-control">
     </div>
 
     <div class="mb-2">
-        <input type="number" name="price" class="form-control" placeholder="Harga">
+        <label>Harga</label>
+        <input type="number" name="price" class="form-control">
     </div>
 
     <div class="mb-2">
-        <input type="number" name="tickets_available" class="form-control" placeholder="Tiket tersedia">
+        <label>Stock</label>
+        <input type="number" name="tickets_available" class="form-control">
     </div>
 
     <div class="mb-3">

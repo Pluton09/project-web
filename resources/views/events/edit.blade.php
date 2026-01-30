@@ -4,7 +4,8 @@
 
 <h2>Edit Event</h2>
 
-<form action="/events/{{ $event->id }}" method="POST">
+<form action="{{ route('events.update', $event->id) }}" method="POST">
+
     @csrf
     @method('PUT')
 
